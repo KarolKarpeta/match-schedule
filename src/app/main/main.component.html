@@ -1,0 +1,50 @@
+<div
+  class="btn-group flex justify-content-center"
+  style="display: flex; margin: 3rem"
+>
+  <a
+    [routerLink]="'/'"
+    [queryParams]="{ liga: '4' }"
+    class="btn btn-primary"
+    aria-current="page"
+    >IV liga</a
+  >
+  <a
+    [routerLink]="'/'"
+    [queryParams]="{ liga: 'okregowka' }"
+    class="btn btn-primary"
+    >Klasa okręgowa</a
+  >
+  <a [routerLink]="'/'" [queryParams]="{ liga: 'a' }" class="btn btn-primary"
+    >Klasa A</a
+  >
+  <a [routerLink]="'/'" [queryParams]="{ liga: 'b' }" class="btn btn-primary"
+    >Klasa B</a
+  >
+</div>
+
+@for (league of leagues(); track league.name) {
+<div class="container my-5">
+  <div class="bg-light p-3 rounded shadow-sm mb-3">
+    <h4 class="m-0 text-dark text-center">{{ league.name }}</h4>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Gospodarze</th>
+        <th scope="col">Goście</th>
+        <th scope="col">Termin</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (match of league.matches; track $index; let i = $index) {
+      <tr>
+        <td>{{ match.homeTeam | polish }}</td>
+        <td>{{ match.awayTeam | polish }}</td>
+        <td>{{ match.date }}</td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>
+}

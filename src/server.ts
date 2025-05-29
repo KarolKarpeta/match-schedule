@@ -4,6 +4,8 @@ import {
   isMainModule,
   writeResponseToNodeResponse,
 } from '@angular/ssr/node';
+import axios from 'axios';
+import cors from 'cors';
 import express from 'express';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,6 +14,7 @@ const serverDistFolder = dirname(fileURLToPath(import.meta.url));
 const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
+app.use(cors());
 const angularApp = new AngularNodeAppEngine();
 
 /**
@@ -26,6 +29,35 @@ const angularApp = new AngularNodeAppEngine();
  * ```
  */
 
+function getLigaUrl(liga: any) {
+  switch (liga) {
+    case '4':
+      return 'http://www.90minut.pl/liga/1/liga13566.html';
+    case '5':
+      return 'http://www.90minut.pl/liga/1/liga13840.html';
+    case 'a1':
+      return 'http://www.90minut.pl/liga/1/liga13952.html';
+    case 'a2':
+      return 'http://www.90minut.pl/liga/1/liga13953.html';
+    case 'b1':
+      return 'http://www.90minut.pl/liga/1/liga13980.html';
+    case 'b2':
+      return 'http://www.90minut.pl/liga/1/liga13981.html';
+  }
+  return '';
+}
+
+app.get('/api/getLeagueData', async (req, res) => {
+  const league = req.query['league'];
+  try {
+    const data = await axios.get(getLigaUrl(league));
+    return res.json(data.data);
+  } catch (error) {
+    res.status(500).json({ error: 'Błąd przy pobieraniu danych' });
+  }
+  return res.json(axios.get(getLigaUrl(league)));
+});
+
 /**
  * Serve static files from /browser
  */
@@ -34,7 +66,7 @@ app.use(
     maxAge: '1y',
     index: false,
     redirect: false,
-  }),
+  })
 );
 
 /**
@@ -44,7 +76,7 @@ app.use('/**', (req, res, next) => {
   angularApp
     .handle(req)
     .then((response) =>
-      response ? writeResponseToNodeResponse(response, res) : next(),
+      response ? writeResponseToNodeResponse(response, res) : next()
     )
     .catch(next);
 });
