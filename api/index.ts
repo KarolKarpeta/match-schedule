@@ -8,11 +8,16 @@ import {
 } from '@angular/ssr/node';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const distFolder = join(__dirname, '../browser');
 
+// ⬇️ Dynamiczny import bootstrapa z dist/server/
+const bootstrap = import('../dist/schedule/server/main.server.mjs');
+
+// ⬇️ Przekazujemy bootstrap do SSR Engine
+const AngularNodeAppEngineAny = AngularNodeAppEngine as any;
+const angularApp = new AngularNodeAppEngineAny({ bootstrap });
+
 const app = express();
-const angularApp = new AngularNodeAppEngine();
 
 app.use(express.static(distFolder, {
   maxAge: '1y',
