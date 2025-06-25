@@ -111,7 +111,7 @@ export class ScMainComponent implements OnInit {
             }
           });
 
-          if (upcomingRound) {
+          if (!upcomingRound) {
             this._fetchTableData(table, league.name[index]);
             break;
           }
