@@ -1,15 +1,16 @@
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/index.ts",
-      "use": "@vercel/node"
+  {
+    "version": 2,
+    "public": true,
+    "name": " match-schedule",
+    "rewrites": [
+      {
+        "source": "/(.*)",
+        "destination": "/api"
+      }
+    ],
+    "functions": {
+      "api/index.js": {
+        "includeFiles": "dist/match-schedule/**"
+      }
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "api/index.ts"
-    }
-  ]
-}
+  }
