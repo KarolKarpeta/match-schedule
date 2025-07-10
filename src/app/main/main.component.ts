@@ -12,6 +12,7 @@ import { AppRestService } from '../app-rest.service';
 import { League } from '../models/league.interface';
 import { Match } from '../models/match.interface';
 import { PolishPipe } from '../models/tools/polish.pipe';
+import '@angular/compiler';
 
 export const LEAGUES = {
   Four: { queryParamList: ['4'], name: ['IV liga'], restParam: ['4'] },
