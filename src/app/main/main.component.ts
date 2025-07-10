@@ -62,6 +62,7 @@ export class ScMainComponent implements OnInit {
   entries = Object.entries(LEAGUES) as [string, LeagueType][];
 
   public ngOnInit(): void {
+    console.log('Wersja 1.0');
     if (isPlatformBrowser(this._platformId)) {
       this._activatedRoute.queryParams.subscribe((params) => {
         this.leagues.set([]);
@@ -71,7 +72,6 @@ export class ScMainComponent implements OnInit {
         if (liga) {
           for (const [key, league] of this.entries) {
             if (league.queryParamList.includes(liga as never)) {
-              console.log('to liga: ', league.name);
               this.fetchData(league);
               fetchAll = false;
             }
